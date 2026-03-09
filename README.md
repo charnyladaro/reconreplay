@@ -3,9 +3,9 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/yourusername/reconreplay/releases" alt="GitHub release">
-        <img src="https://img.shields.io/github/release/yourusername/reconreplay.svg" /></a>
-    <img src="https://img.shields.io/github/downloads/yourusername/reconreplay/total" alt="GitHub all releases downloads count">
+    <a href="https://github.com/charnyladaro/reconreplay/releases" alt="GitHub release">
+        <img src="https://img.shields.io/github/release/charnyladaro/reconreplay.svg" /></a>
+    <img src="https://img.shields.io/github/downloads/charnyladaro/reconreplay/total" alt="GitHub all releases downloads count">
     <a href="https://discord.gg/yourserver" alt="Discord">
         <img src="https://img.shields.io/badge/chat-%20on%20Discord-blue.svg" /></a>
     <a href="https://twitter.com/intent/follow?screen_name=yourhandle" alt="Twitter">
@@ -15,8 +15,8 @@
 <p align="center">
   <a href="#features">Features</a> •
   <a href="#installation">Installation</a> •
-  <a href="https://github.com/yourusername/reconreplay/issues">Report a Bug</a> •
-  <a href="https://github.com/yourusername/reconreplay/issues">Request a Feature</a>
+  <a href="https://github.com/charnyladaro/reconreplay/issues">Report a Bug</a> •
+  <a href="https://github.com/charnyladaro/reconreplay/issues">Request a Feature</a>
 </p>
 
 **ReconReplay** is an advanced desktop web security testing tool for bug bounty hunters and penetration testers. It captures real browser sessions and replays them automatically with active payload injection — detecting XSS, SQL Injection, IDOR, Path Traversal, CRLF, Open Redirect, and more.
@@ -42,13 +42,13 @@ All session data stays on your machine. No traffic is uploaded to external serve
 
 ReconReplay is designed for easy installation on Windows and Linux.
 
-- First, [download](https://github.com/yourusername/reconreplay/releases) the package for your platform.
+- First, [download](https://github.com/charnyladaro/reconreplay/releases/tag/Reconreplayv2.0.0) the installer for Windows.
 - Run the installer and launch ReconReplay — the mitmproxy CA certificate is installed automatically on first launch.
 - Create a free account, start a new session, and begin recording.
 
 ### Windows Installer
 
-1. Download the latest **`ReconReplay Setup 2.0.0.exe`** from the [Releases](https://github.com/yourusername/reconreplay/releases) page.
+1. Download the latest **`ReconReplay Setup 2.0.0.exe`** from the [Releases](https://github.com/charnyladaro/reconreplay/releases/tag/Reconreplayv2.0.0) page.
 2. Run the installer — you can choose the installation directory when prompted.
 3. Launch **ReconReplay** from the Start Menu or desktop shortcut.
 4. Sign in or create a free account on the login screen.
@@ -80,10 +80,10 @@ ReconReplay is designed for easy installation on Windows and Linux.
 
 You can help by:
 
-- Reporting [bugs](https://github.com/yourusername/reconreplay/issues)
-- Requesting new [features](https://github.com/yourusername/reconreplay/issues)
+- Reporting [bugs](https://github.com/charnyladaro/reconreplay/issues)
+- Requesting new [features](https://github.com/charnyladaro/reconreplay/issues)
 - Submitting custom payload profiles to `python/payloads/custom/`
-- Improving the [documentation](https://github.com/yourusername/reconreplay/wiki)
+- Improving the [documentation](https://github.com/charnyladaro/reconreplay/wiki)
 - Writing blog posts, tutorials, or write-ups using ReconReplay
 
 ---
