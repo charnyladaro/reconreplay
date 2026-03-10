@@ -915,6 +915,43 @@
       margin-bottom: 24px;
     }
 
+    .dl-install {
+      margin-top: 20px;
+      width: 100%;
+      text-align: left;
+    }
+
+    .dl-install-label {
+      font-size: 10.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text);
+      margin-bottom: 7px;
+    }
+
+    .dl-install pre {
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 14px;
+      font-family: 'Consolas', 'Fira Code', monospace;
+      font-size: 11.5px;
+      line-height: 1.7;
+      color: var(--text-md);
+      white-space: pre;
+      overflow-x: auto;
+      margin: 0;
+    }
+
+    .dl-install pre .cmt {
+      color: var(--text);
+    }
+
+    .dl-install pre .cmd {
+      color: var(--green);
+    }
+
     .btn-dl-win {
       display: inline-block;
       background: var(--accent);
@@ -924,7 +961,7 @@
       border-radius: 7px;
       font-size: 13.5px;
       font-weight: 700;
-      cursor: not-allowed;
+      cursor: pointer;
       opacity: 0.55;
       width: 100%;
     }
@@ -939,7 +976,7 @@
       border-radius: 7px;
       font-size: 13.5px;
       font-weight: 600;
-      cursor: not-allowed;
+      cursor: pointer;
       opacity: 0.55;
       width: 100%;
     }
@@ -1242,9 +1279,11 @@
       .hamburger.active span:nth-child(1) {
         transform: translateY(8px) rotate(45deg);
       }
+
       .hamburger.active span:nth-child(2) {
         opacity: 0;
       }
+
       .hamburger.active span:nth-child(3) {
         transform: translateY(-8px) rotate(-45deg);
       }
@@ -1314,10 +1353,11 @@
       <a href="#profiles">Payloads</a>
       <a href="https://github.com/charnyladaro/reconreplay/wiki" target="_blank">Documentation</a>
       <a href="#download">Download</a>
-      <a class="nav-cta mobile-cta" href="https://github.com/charnyladaro/reconreplay/releases/download/Reconreplayv2.0.0/ReconReplay.Setup.2.0.0.exe">Download Free</a>
+      <a class="nav-cta mobile-cta"
+        href="https://github.com/charnyladaro/reconreplay/releases/download/ReconReplayv2.0.1/ReconReplay.Setup.2.0.1.exe">Download
+        Free</a>
     </div>
     <div class="nav-right">
-      <a class="nav-cta desktop-cta" href="https://github.com/charnyladaro/reconreplay/releases/download/Reconreplayv2.0.0/ReconReplay.Setup.2.0.0.exe">Download Free</a>
       <div class="hamburger" id="hamburgerMenu">
         <span></span>
         <span></span>
@@ -1333,7 +1373,7 @@
       <div class="hero-left">
         <div class="hero-eyebrow">
           <span class="dot"></span>
-          Beta v2.0.0 — All Features Unlocked
+          Beta v2.0.1 — All Features Unlocked
         </div>
 
         <h1 class="hero-title">
@@ -1357,8 +1397,12 @@
 
         <div class="hero-btns">
           <a class="btn-primary"
-            href="https://github.com/charnyladaro/reconreplay/releases/download/Reconreplayv2.0.0/ReconReplay.Setup.2.0.0.exe">
+            href="https://github.com/charnyladaro/reconreplay/releases/download/ReconReplayv2.0.1/ReconReplay.Setup.2.0.1.exe">
             <span>⊞</span> Download for Windows
+          </a>
+          <a class="btn-secondary"
+            href="https://github.com/charnyladaro/reconreplay/releases/download/ReconReplayv2.0.1/ReconReplay-2.0.1.AppImage">
+            <span>🐧</span> Download for Linux
           </a>
           <a class="btn-secondary" href="#how-it-works">
             <span>▾</span> How It Works
@@ -1366,11 +1410,11 @@
         </div>
 
         <div class="hero-meta">
-          <span>v2.0.0</span>
+          <span>v2.0.1</span>
           <span>·</span>
           <span>March 2026</span>
           <span>·</span>
-          <a href="https://github.com/charnyladaro/reconreplay/releases/tag/Reconreplayv2.0.0">What's New →</a>
+          <a href="https://github.com/charnyladaro/reconreplay/releases/tag/ReconReplayv2.0.1">What's New →</a>
         </div>
       </div>
 
@@ -1734,22 +1778,30 @@
 
       <div class="dl-grid">
         <div class="dl-card">
-          <span class="coming-badge">Coming Soon</span>
           <div class="dl-os-icon">🪟</div>
           <h3>Windows</h3>
           <div class="dl-sub">Windows 10 / 11 — 64-bit</div>
           <div class="dl-ext">.exe installer (NSIS)</div>
           <a class="btn-dl-win"
-            href="https://github.com/charnyladaro/reconreplay/releases/download/Reconreplayv2.0.0/ReconReplay.Setup.2.0.0.exe">Download
+            href="https://github.com/charnyladaro/reconreplay/releases/download/ReconReplayv2.0.1/ReconReplay.Setup.2.0.1.exe">Download
             for Windows</a>
         </div>
         <div class="dl-card">
-          <span class="coming-badge">Coming Soon</span>
           <div class="dl-os-icon">🐧</div>
           <h3>Linux</h3>
-          <div class="dl-sub">Ubuntu 20.04+ — 64-bit</div>
-          <div class="dl-ext">.AppImage</div>
-          <a class="btn-dl-linux" href="download.html">Download for Linux</a>
+          <div class="dl-sub">Ubuntu 20.04+ / Kali / Fedora — 64-bit</div>
+          <div class="dl-ext">.AppImage (portable, no install needed)</div>
+          <a class="btn-dl-linux"
+            href="https://github.com/charnyladaro/reconreplay/releases/download/ReconReplayv2.0.1/ReconReplay-2.0.1.AppImage">Download
+            for Linux</a>
+          <div class="dl-install">
+            <div class="dl-install-label">How to run</div>
+            <pre><span class="cmt"># Make executable (one time only)</span>
+<span class="cmd">chmod +x</span> ReconReplay-2.0.1.AppImage
+
+<span class="cmt"># Run</span>
+<span class="cmd">./</span>ReconReplay-2.0.1.AppImage</pre>
+          </div>
         </div>
       </div>
 
@@ -1763,7 +1815,7 @@
         <div class="req-grid">
           <div class="req-item">
             <span class="r-label">OS</span>
-            <span class="r-val">Windows 10 / 11</span>
+            <span class="r-val">Windows 10 / 11 · Linux (AppImage)</span>
           </div>
           <div class="req-item">
             <span class="r-label">RAM</span>
@@ -1788,7 +1840,7 @@
     <p>ReconReplay is free during Beta. All Pro features are fully unlocked — no limits, no paywalls.</p>
     <div class="cta-btns">
       <a class="btn-primary"
-        href="https://github.com/charnyladaro/reconreplay/releases/download/Reconreplayv2.0.0/ReconReplay.Setup.2.0.0.exe">Download
+        href="https://github.com/charnyladaro/reconreplay/releases/download/ReconReplayv2.0.1/ReconReplay.Setup.2.0.1.exe">Download
         Free</a>
       <a class="btn-secondary" href="#features">Explore Features</a>
     </div>
@@ -1835,7 +1887,7 @@
   <script>
     const hamburger = document.getElementById('hamburgerMenu');
     const navLinks = document.getElementById('navLinks');
-    
+
     if (hamburger && navLinks) {
       hamburger.addEventListener('click', () => {
         hamburger.classList.toggle('active');
