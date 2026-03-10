@@ -1,0 +1,1759 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReconReplay — Record. Replay. Exploit.</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0d1117;
+      --bg-dark: #010409;
+      --bg-card: #161b22;
+      --bg-card2: #21262d;
+      --border: #21262d;
+      --border2: #30363d;
+      --accent: #58a6ff;
+      --accent-h: #79b8ff;
+      --accent-dim: rgba(88, 166, 255, 0.10);
+      --green: #3fb950;
+      --red: #f85149;
+      --orange: #e3b341;
+      --purple: #bc8cff;
+      --text: #8b949e;
+      --text-md: #c9d1d9;
+      --text-hi: #e6edf3;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* =============================================
+       NAVBAR
+       ============================================= */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: rgba(1, 4, 9, 0.80);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 48px;
+      z-index: 999;
+      gap: 40px;
+    }
+
+    .nav-brand {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text-hi);
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .nav-brand span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      flex: 1;
+    }
+
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-hi);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .nav-cta {
+      background: var(--accent);
+      color: #0d1117;
+      text-decoration: none;
+      padding: 8px 20px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      transition: background 0.15s;
+    }
+
+    .nav-cta:hover {
+      background: var(--accent-h);
+    }
+
+    /* =============================================
+       HERO
+       ============================================= */
+    .hero {
+      min-height: 100vh;
+      padding-top: 60px;
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(rgba(88, 166, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(88, 166, 255, 0.03) 1px, transparent 1px);
+      background-size: 52px 52px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 25% 55%, rgba(88, 166, 255, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 75% 40%, rgba(188, 140, 255, 0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 72px 64px 88px;
+      display: grid;
+      grid-template-columns: 1fr 1.65fr;
+      gap: 56px;
+      align-items: center;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Hero left */
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(88, 166, 255, 0.2);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 24px;
+      letter-spacing: 0.3px;
+    }
+
+    .hero-eyebrow .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: blink 2s infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: 0.3
+      }
+    }
+
+    .hero-title {
+      font-size: clamp(2.8rem, 5vw, 4.8rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -2px;
+      margin-bottom: 22px;
+      color: var(--text);
+    }
+
+    .hero-title .t-white {
+      color: var(--text-hi);
+    }
+
+    .hero-title .t-blue {
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: 16.5px;
+      color: var(--text);
+      line-height: 1.7;
+      margin-bottom: 36px;
+      max-width: 460px;
+    }
+
+    .hero-sub strong {
+      color: var(--text-md);
+      font-weight: 500;
+    }
+
+    .hero-pills {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 38px;
+    }
+
+    .pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-card);
+      border: 1px solid var(--border2);
+      border-radius: 20px;
+      padding: 5px 13px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-md);
+    }
+
+    .pill .pi {
+      color: var(--accent);
+      font-size: 13px;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--accent);
+      color: #0d1117;
+      text-decoration: none;
+      padding: 13px 26px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-h);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      color: var(--text-md);
+      text-decoration: none;
+      padding: 13px 26px;
+      border-radius: 8px;
+      border: 1px solid var(--border2);
+      font-size: 13.5px;
+      font-weight: 600;
+      transition: border-color 0.15s, color 0.15s, transform 0.1s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .hero-meta {
+      font-size: 12.5px;
+      color: var(--text);
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .hero-meta span {
+      opacity: 0.5;
+    }
+
+    .hero-meta a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .hero-meta a:hover {
+      color: var(--accent-h);
+    }
+
+    /* Hero right — screenshot */
+    .hero-screenshot {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border2);
+      box-shadow:
+        0 0 0 1px rgba(88, 166, 255, 0.07),
+        0 32px 80px rgba(0, 0, 0, 0.7),
+        0 8px 28px rgba(0, 0, 0, 0.4);
+    }
+
+    .hero-screenshot img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* =============================================
+       STATS BAR
+       ============================================= */
+    .stats-bar {
+      background: var(--bg-dark);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 24px 64px;
+    }
+
+    .stats-bar-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .stat-val {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .stat-div {
+      width: 1px;
+      height: 40px;
+      background: var(--border2);
+    }
+
+    /* =============================================
+       SHARED SECTION STYLES
+       ============================================= */
+    section {
+      padding: 96px 64px;
+    }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 700;
+      color: var(--text-hi);
+      letter-spacing: -0.8px;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+
+    .section-desc {
+      font-size: 15.5px;
+      color: var(--text);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 56px;
+    }
+
+    /* =============================================
+       FEATURES
+       ============================================= */
+    .features {
+      background: var(--bg);
+    }
+
+    .feat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .feat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 28px 26px;
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(88, 166, 255, 0.3), transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .feat-card:hover {
+      border-color: rgba(88, 166, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .feat-card:hover::before {
+      opacity: 1;
+    }
+
+    .feat-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(88, 166, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 18px;
+    }
+
+    .feat-card h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-hi);
+      margin-bottom: 8px;
+    }
+
+    .feat-card p {
+      font-size: 13.5px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .feat-tag {
+      display: inline-block;
+      margin-top: 14px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-dim);
+      padding: 2px 9px;
+      border-radius: 4px;
+      letter-spacing: 0.3px;
+    }
+
+    /* =============================================
+       HOW IT WORKS
+       ============================================= */
+    .how {
+      background: var(--bg-dark);
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+
+    .steps-grid::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: calc(12.5% + 20px);
+      right: calc(12.5% + 20px);
+      height: 1px;
+      background: linear-gradient(90deg,
+          var(--accent) 0%, rgba(88, 166, 255, 0.4) 33%,
+          rgba(88, 166, 255, 0.4) 66%, var(--accent) 100%);
+      z-index: 0;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-num {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 22px;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 0 0 4px var(--bg-dark);
+    }
+
+    .step h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-hi);
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* =============================================
+       PAYLOAD PROFILES
+       ============================================= */
+    .profiles {
+      background: var(--bg);
+    }
+
+    .profiles-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .profile-left {}
+
+    .profile-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .profile-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      transition: border-color 0.15s;
+    }
+
+    .profile-item:hover {
+      border-color: rgba(88, 166, 255, 0.3);
+    }
+
+    .profile-item .p-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .profile-item .p-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-md);
+    }
+
+    .profile-item .p-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    .dot-red {
+      background: var(--red);
+    }
+
+    .dot-ora {
+      background: var(--orange);
+    }
+
+    .dot-blu {
+      background: var(--accent);
+    }
+
+    .dot-pur {
+      background: var(--purple);
+    }
+
+    .dot-grn {
+      background: var(--green);
+    }
+
+    /* =============================================
+       USE CASES
+       ============================================= */
+    .usecases {
+      background: var(--bg-dark);
+    }
+
+    .uc-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .uc-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 32px 28px;
+      transition: border-color 0.15s;
+    }
+
+    .uc-card:hover {
+      border-color: rgba(88, 166, 255, 0.3);
+    }
+
+    .uc-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+
+    .uc-card h3 {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-hi);
+      margin-bottom: 10px;
+    }
+
+    .uc-card p {
+      font-size: 13.5px;
+      color: var(--text);
+      line-height: 1.65;
+      margin-bottom: 20px;
+    }
+
+    .uc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .uc-list li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-md);
+    }
+
+    .uc-list li::before {
+      content: '✓';
+      color: var(--green);
+      font-weight: 700;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    /* =============================================
+       DETECTION
+       ============================================= */
+    .detection {
+      background: var(--bg);
+    }
+
+    .detection-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .det-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 18px;
+    }
+
+    .det-sev {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
+
+    .sev-crit {
+      background: rgba(248, 81, 73, 0.15);
+      color: var(--red);
+      border: 1px solid rgba(248, 81, 73, 0.3);
+    }
+
+    .sev-high {
+      background: rgba(227, 179, 65, 0.12);
+      color: var(--orange);
+      border: 1px solid rgba(227, 179, 65, 0.3);
+    }
+
+    .sev-med {
+      background: rgba(88, 166, 255, 0.12);
+      color: var(--accent);
+      border: 1px solid rgba(88, 166, 255, 0.3);
+    }
+
+    .sev-low {
+      background: rgba(63, 185, 80, 0.12);
+      color: var(--green);
+      border: 1px solid rgba(63, 185, 80, 0.3);
+    }
+
+    .det-card h4 {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-hi);
+      margin-bottom: 5px;
+    }
+
+    .det-card p {
+      font-size: 12px;
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    /* =============================================
+       PRIVACY STRIP
+       ============================================= */
+    .privacy-strip {
+      background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 64px 64px;
+    }
+
+    .privacy-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 40px;
+    }
+
+    .priv-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .priv-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(88, 166, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .priv-text h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-hi);
+      margin-bottom: 5px;
+    }
+
+    .priv-text p {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    /* =============================================
+       DOWNLOAD
+       ============================================= */
+    .download {
+      background: var(--bg-dark);
+    }
+
+    .dl-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .dl-header .section-desc {
+      margin: 0 auto;
+    }
+
+    .dl-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 780px;
+      margin: 0 auto 40px;
+    }
+
+    .dl-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border2);
+      border-radius: 12px;
+      padding: 36px 32px;
+      text-align: center;
+      transition: border-color 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dl-card:hover {
+      border-color: rgba(88, 166, 255, 0.4);
+    }
+
+    .dl-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .dl-card:hover::before {
+      opacity: 1;
+    }
+
+    .dl-os-icon {
+      font-size: 44px;
+      margin-bottom: 14px;
+    }
+
+    .dl-card h3 {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-hi);
+      margin-bottom: 6px;
+    }
+
+    .dl-card .dl-sub {
+      font-size: 13px;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .dl-card .dl-ext {
+      font-size: 11.5px;
+      color: var(--text);
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 8px;
+      display: inline-block;
+      font-family: 'Consolas', monospace;
+      margin-bottom: 24px;
+    }
+
+    .btn-dl-win {
+      display: inline-block;
+      background: var(--accent);
+      color: #0d1117;
+      text-decoration: none;
+      padding: 11px 28px;
+      border-radius: 7px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: not-allowed;
+      opacity: 0.55;
+      width: 100%;
+    }
+
+    .btn-dl-linux {
+      display: inline-block;
+      background: transparent;
+      border: 1px solid var(--border2);
+      color: var(--text-md);
+      text-decoration: none;
+      padding: 11px 28px;
+      border-radius: 7px;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: not-allowed;
+      opacity: 0.55;
+      width: 100%;
+    }
+
+    .coming-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      font-size: 10px;
+      font-weight: 700;
+      background: rgba(88, 166, 255, 0.15);
+      border: 1px solid rgba(88, 166, 255, 0.3);
+      color: var(--accent);
+      padding: 2px 9px;
+      border-radius: 10px;
+      letter-spacing: 0.3px;
+    }
+
+    .dl-note {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text);
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .dl-note a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .dl-note a:hover {
+      color: var(--accent-h);
+      text-decoration: underline;
+    }
+
+    /* Requirements */
+    .dl-req {
+      max-width: 780px;
+      margin: 40px auto 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px 28px;
+    }
+
+    .dl-req h4 {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .req-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .req-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .req-item .r-label {
+      font-size: 11px;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+
+    .req-item .r-val {
+      font-size: 13px;
+      color: var(--text-md);
+      font-weight: 500;
+    }
+
+    /* =============================================
+       CTA STRIP
+       ============================================= */
+    .cta-strip {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 80px 64px;
+      text-align: center;
+    }
+
+    .cta-strip h2 {
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 700;
+      color: var(--text-hi);
+      letter-spacing: -0.8px;
+      margin-bottom: 14px;
+    }
+
+    .cta-strip p {
+      font-size: 15.5px;
+      color: var(--text);
+      margin-bottom: 36px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-btns {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* =============================================
+       FOOTER
+       ============================================= */
+    .footer {
+      background: var(--bg-dark);
+      border-top: 1px solid var(--border);
+      padding: 48px 64px 32px;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+
+    .footer-brand-col {}
+
+    .footer-brand {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-hi);
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 12px;
+      letter-spacing: -0.4px;
+    }
+
+    .footer-brand span {
+      color: var(--accent);
+    }
+
+    .footer-desc {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.6;
+      max-width: 240px;
+    }
+
+    .footer-col h4 {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .footer-col ul a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 13.5px;
+      transition: color 0.15s;
+    }
+
+    .footer-col ul a:hover {
+      color: var(--text-hi);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-bottom p {
+      font-size: 12.5px;
+      color: var(--text);
+    }
+
+    .footer-badges {
+      display: flex;
+      gap: 10px;
+    }
+
+    .f-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 4px;
+      border: 1px solid var(--border2);
+      color: var(--text);
+    }
+
+    .f-badge.blue {
+      border-color: rgba(88, 166, 255, 0.3);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    /* =============================================
+       RESPONSIVE
+       ============================================= */
+    @media (max-width: 1100px) {
+      .feat-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .detection-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-top {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .nav {
+        padding: 0 24px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      section {
+        padding: 64px 24px;
+      }
+
+      .hero-inner {
+        grid-template-columns: 1fr;
+        padding: 64px 24px 72px;
+      }
+
+      .hero-screenshot {
+        display: none;
+      }
+
+      .steps-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+      }
+
+      .steps-grid::before {
+        display: none;
+      }
+
+      .profiles-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .uc-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .privacy-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .dl-grid {
+        grid-template-columns: 1fr;
+        max-width: 380px;
+      }
+
+      .req-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-top {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stats-bar {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="nav">
+    <a class="nav-brand" href="landing.html"><span>Recon</span>Replay</a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#profiles">Payloads</a>
+      <a href="#download">Download</a>
+    </div>
+    <div class="nav-right">
+      <a class="nav-cta" href="#download">Download Free</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero-inner">
+
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="dot"></span>
+          Beta v2.0.0 — All Features Unlocked
+        </div>
+
+        <h1 class="hero-title">
+          <span class="t-white">Record.</span><br>
+          <span class="t-blue">Replay.</span><br>
+          <span class="t-white">Exploit.</span>
+        </h1>
+
+        <p class="hero-sub">
+          <strong>ReconReplay</strong> captures real browser sessions and
+          replays them with automated payload injection — reaching every
+          endpoint, form, and API a traditional scanner would miss.
+        </p>
+
+        <div class="hero-pills">
+          <span class="pill"><span class="pi">⊞</span> On-Premise</span>
+          <span class="pill"><span class="pi">🔒</span> Local-First</span>
+          <span class="pill"><span class="pi">🎭</span> Playwright Powered</span>
+          <span class="pill"><span class="pi">💉</span> 11 Vuln Profiles</span>
+        </div>
+
+        <div class="hero-btns">
+          <a class="btn-primary" href="#download">
+            <span>⊞</span> Download for Windows
+          </a>
+          <a class="btn-secondary" href="#how-it-works">
+            <span>▾</span> How It Works
+          </a>
+        </div>
+
+        <div class="hero-meta">
+          <span>v2.0.0</span>
+          <span>·</span>
+          <span>March 2026</span>
+          <span>·</span>
+          <a href="#">What's New →</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="hero-screenshot">
+          <img src="images/Main.png" alt="ReconReplay application screenshot" />
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== STATS BAR ===== -->
+  <div class="stats-bar">
+    <div class="stats-bar-inner">
+      <div class="stat-item">
+        <div class="stat-val">11</div>
+        <div class="stat-label">Payload Profiles</div>
+      </div>
+      <div class="stat-div"></div>
+      <div class="stat-item">
+        <div class="stat-val">6×</div>
+        <div class="stat-label">Encoding Variants</div>
+      </div>
+      <div class="stat-div"></div>
+      <div class="stat-item">
+        <div class="stat-val">100%</div>
+        <div class="stat-label">Local Data Storage</div>
+      </div>
+      <div class="stat-div"></div>
+      <div class="stat-item">
+        <div class="stat-val">2</div>
+        <div class="stat-label">Replay Modes</div>
+      </div>
+      <div class="stat-div"></div>
+      <div class="stat-item">
+        <div class="stat-val">3</div>
+        <div class="stat-label">Report Formats</div>
+      </div>
+      <div class="stat-div"></div>
+      <div class="stat-item">
+        <div class="stat-val">5</div>
+        <div class="stat-label">Database Tables</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FEATURES ===== -->
+  <section class="features" id="features">
+    <div class="section-inner">
+      <div class="section-label">Features</div>
+      <h2 class="section-title">Everything you need to test<br>modern web applications</h2>
+      <p class="section-desc">
+        From passive scanning during recording to active payload injection during replay —
+        ReconReplay covers the full attack surface automatically.
+      </p>
+
+      <div class="feat-grid">
+        <div class="feat-card">
+          <div class="feat-icon">🎥</div>
+          <h3>Session Recording</h3>
+          <p>Browse normally while ReconReplay silently captures all HTTP/HTTPS traffic and every DOM interaction —
+            clicks, inputs, scrolls — through mitmproxy and Playwright.</p>
+          <span class="feat-tag">mitmproxy + Playwright</span>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">🔍</div>
+          <h3>Passive Scanning</h3>
+          <p>Automatically detects vulnerabilities during recording without sending a single extra request. Stack
+            traces, CORS misconfigurations, missing headers, and more.</p>
+          <span class="feat-tag">Zero extra requests</span>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">⚡</div>
+          <h3>HTTP Replay</h3>
+          <p>Fast headless replay of all captured requests with payloads injected into selected parameters. Three speed
+            modes — Normal, Fast, and Stealth for rate-limited targets.</p>
+          <span class="feat-tag">Headless · 3 speed modes</span>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">🎭</div>
+          <h3>Visual Replay</h3>
+          <p>Full Playwright browser automation that re-drives your exact recorded session. Injects payloads at both
+            network level (page.route) and DOM level — bypassing all client-side validation.</p>
+          <span class="feat-tag">Network + DOM injection</span>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">🎯</div>
+          <h3>Granular Control</h3>
+          <p>Choose exactly which parameters receive which payloads. The Payload Picker lets you select individual
+            payload strings per profile — no shotgun blasting.</p>
+          <span class="feat-tag">Per-parameter targeting</span>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">📄</div>
+          <h3>Multi-Format Reports</h3>
+          <p>Export findings as Markdown for HackerOne/Bugcrowd, HTML for stakeholders, or JSON for programmatic
+            processing. False positive management and severity filtering built in.</p>
+          <span class="feat-tag">Markdown · HTML · JSON</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="how" id="how-it-works">
+    <div class="section-inner">
+      <div class="section-label">Workflow</div>
+      <h2 class="section-title">Four steps to a full security assessment</h2>
+      <p class="section-desc">
+        ReconReplay guides you through a structured workflow — from capturing real user flows
+        to delivering a polished report.
+      </p>
+
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-num">🎥</div>
+          <h3>Record</h3>
+          <p>Browse the target normally through the built-in proxy. All traffic and DOM actions are captured
+            automatically.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">🔍</div>
+          <h3>Analyze</h3>
+          <p>Review captured requests, extracted parameters, and passive findings before running any active tests.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">💉</div>
+          <h3>Replay</h3>
+          <p>Select payload profiles and parameters. ReconReplay injects payloads and detects vulnerabilities
+            automatically.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">📄</div>
+          <h3>Report</h3>
+          <p>Export confirmed findings with evidence, CVSS severity, and remediation guidance in your preferred format.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PAYLOAD PROFILES ===== -->
+  <section class="profiles" id="profiles">
+    <div class="section-inner">
+      <div class="profiles-layout">
+        <div class="profile-left">
+          <div class="section-label">Payload Profiles</div>
+          <h2 class="section-title">11 vulnerability profiles<br>out of the box</h2>
+          <p class="section-desc" style="margin-bottom:0">
+            Every profile ships with real-world payloads and a dedicated detection engine.
+            Enable, disable, or customize payloads individually — no configuration files to edit.
+          </p>
+        </div>
+        <div class="profile-list">
+          <div class="profile-item">
+            <span class="p-icon">🔴</span>
+            <span class="p-name">Cross-Site Scripting</span>
+            <span class="p-dot dot-red"></span>
+          </div>
+          <div class="profile-item">
+            <span class="p-icon">🗄️</span>
+            <span class="p-name">SQL Injection</span>
+            <span class="p-dot dot-red"></span>
+          </div>
+          <div class="profile-item">
+            <span class="p-icon">🔑</span>
+            <span class="p-name">IDOR</span>
+            <span class="p-dot dot-ora"></span>
+          </div>
+          <div class="profile-item">
+            <span class="p-icon">💻</span>
+            <span class="p-name">OS Command Injection</span>
+            <span class="p-dot dot-red"></span>
+          </div>
+          <div class="profile-item">
+            <span class="p-icon">📁</span>
+            <span class="p-name">Path Traversal</span>
+            <span class="p-dot dot-ora"></span>
+          </div>
+          <div class="profile-item">
+            <span class="p-icon">↩️</span>
+            <span class="p-name">CRLF Injection</span>
+            <span class="p-dot dot-blu"></span>
+          </div>
+          <div class="profile-item">
+            <span class="p-icon">🔀</span>
+            <span class="p-name">Open Redirect</span>
+            <span class="p-dot dot-blu"></span>
+          </div>
+          <div class="profile-item">
+            <span class="p-icon">🌐</span>
+            <span class="p-name">SSRF</span>
+            <span class="p-dot dot-red"></span>
+          </div>
+          <div class="profile-item">
+            <span class="p-icon">⚠️</span>
+            <span class="p-name">Known Vulnerabilities</span>
+            <span class="p-dot dot-ora"></span>
+          </div>
+          <div class="profile-item">
+            <span class="p-icon">💥</span>
+            <span class="p-name">Error Handling</span>
+            <span class="p-dot dot-grn"></span>
+          </div>
+          <div class="profile-item">
+            <span class="p-icon">⏱️</span>
+            <span class="p-name">Resource Exhaustion</span>
+            <span class="p-dot dot-grn"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== USE CASES ===== -->
+  <section class="usecases" id="use-cases">
+    <div class="section-inner">
+      <div class="section-label">Use Cases</div>
+      <h2 class="section-title">Built for the security community</h2>
+      <p class="section-desc">
+        Whether you're hunting bounties, running a pentest engagement, or doing security research —
+        ReconReplay fits your workflow.
+      </p>
+
+      <div class="uc-grid">
+        <div class="uc-card">
+          <div class="uc-icon">🏆</div>
+          <h3>Bug Bounty Hunters</h3>
+          <p>Capture your entire recon session and instantly replay it against every parameter. Spend less time manually
+            repeating requests and more time finding bugs.</p>
+          <ul class="uc-list">
+            <li>Record authenticated flows once, test forever</li>
+            <li>Export Markdown reports for HackerOne / Bugcrowd</li>
+            <li>Stealth mode avoids rate limiting detection</li>
+            <li>Passive scanning catches low-hanging fruit automatically</li>
+          </ul>
+        </div>
+        <div class="uc-card">
+          <div class="uc-icon">🔐</div>
+          <h3>Penetration Testers</h3>
+          <p>Replicate complex multi-step authenticated flows that traditional scanners cannot reach. Visual replay
+            handles SPAs, React apps, and JavaScript-heavy targets.</p>
+          <ul class="uc-list">
+            <li>Full session replay with Playwright automation</li>
+            <li>Network + DOM level injection for full coverage</li>
+            <li>Multi-format reports for client delivery</li>
+            <li>Project management for organized engagements</li>
+          </ul>
+        </div>
+        <div class="uc-card">
+          <div class="uc-icon">🔬</div>
+          <h3>Security Researchers</h3>
+          <p>Study vulnerability patterns across sessions. All data stays in local SQLite — no risk of sensitive target
+            data leaving your machine to a cloud scanner.</p>
+          <ul class="uc-list">
+            <li>100% local data — SQLite per session</li>
+            <li>JSON export for custom analysis pipelines</li>
+            <li>Open payload profiles — fully customizable</li>
+            <li>6 encoding variant detection per payload</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DETECTION ===== -->
+  <section class="detection">
+    <div class="section-inner">
+      <div class="section-label">Detection</div>
+      <h2 class="section-title">What ReconReplay detects</h2>
+      <p class="section-desc">
+        Each vulnerability type has a dedicated detection engine — not just string matching,
+        but time-based, behavioral, and differential analysis.
+      </p>
+      <div class="detection-grid">
+        <div class="det-card">
+          <div class="det-sev sev-crit">Critical</div>
+          <h4>SQL Injection</h4>
+          <p>DB error patterns, time-based delay (&gt;4s and &gt;3× baseline), boolean differential detection.</p>
+        </div>
+        <div class="det-card">
+          <div class="det-sev sev-crit">Critical</div>
+          <h4>OS Command Injection</h4>
+          <p>Detects ping output, whoami, uid= in response body. Triggers on timeout &gt;9s.</p>
+        </div>
+        <div class="det-card">
+          <div class="det-sev sev-high">High</div>
+          <h4>Cross-Site Scripting</h4>
+          <p>6 encoding variants checked. Playwright dialog handler catches live alert() / confirm() XSS execution.</p>
+        </div>
+        <div class="det-card">
+          <div class="det-sev sev-high">High</div>
+          <h4>SSRF</h4>
+          <p>Internal IP ranges, cloud metadata endpoints (169.254.169.254), localhost variations.</p>
+        </div>
+        <div class="det-card">
+          <div class="det-sev sev-high">High</div>
+          <h4>Path Traversal</h4>
+          <p>Detects /etc/passwd content and Windows hosts file content in responses.</p>
+        </div>
+        <div class="det-card">
+          <div class="det-sev sev-high">High</div>
+          <h4>IDOR</h4>
+          <p>Adjacent numeric ID substitution — different valid 200 responses indicate unauthorized access.</p>
+        </div>
+        <div class="det-card">
+          <div class="det-sev sev-med">Medium</div>
+          <h4>CRLF Injection</h4>
+          <p>Canary header (X-Audit) injection via %0d%0a sequences, verified in response headers.</p>
+        </div>
+        <div class="det-card">
+          <div class="det-sev sev-med">Medium</div>
+          <h4>Open Redirect</h4>
+          <p>3xx responses with Location pointing to the injected domain. Covers protocol-relative bypasses.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PRIVACY STRIP ===== -->
+  <div class="privacy-strip">
+    <div class="privacy-inner">
+      <div class="priv-item">
+        <div class="priv-icon">🔒</div>
+        <div class="priv-text">
+          <h4>100% Local Storage</h4>
+          <p>All captured sessions, requests, and findings are stored in local SQLite databases. No pentest data ever
+            leaves your machine.</p>
+        </div>
+      </div>
+      <div class="priv-item">
+        <div class="priv-icon">🛡️</div>
+        <div class="priv-text">
+          <h4>Encrypted Auth Tokens</h4>
+          <p>Session tokens are stored encrypted using OS-level DPAPI (Windows). Your credentials are never stored in
+            plaintext.</p>
+        </div>
+      </div>
+      <div class="priv-item">
+        <div class="priv-icon">⚡</div>
+        <div class="priv-text">
+          <h4>Identity Auth Only</h4>
+          <p>Supabase is used exclusively for user identity. Zero target data, session data, or findings are ever synced
+            to the cloud.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DOWNLOAD ===== -->
+  <section class="download" id="download">
+    <div class="section-inner">
+      <div class="dl-header">
+        <div class="section-label" style="text-align:center">Download</div>
+        <h2 class="section-title" style="text-align:center">Get ReconReplay</h2>
+        <p class="section-desc" style="text-align:center;margin-bottom:0">
+          Free during Beta. All Pro features fully unlocked. No credit card required.
+        </p>
+      </div>
+
+      <div class="dl-grid">
+        <div class="dl-card">
+          <span class="coming-badge">Coming Soon</span>
+          <div class="dl-os-icon">🪟</div>
+          <h3>Windows</h3>
+          <div class="dl-sub">Windows 10 / 11 — 64-bit</div>
+          <div class="dl-ext">.exe installer (NSIS)</div>
+          <a class="btn-dl-win" href="download.html">Download for Windows</a>
+        </div>
+        <div class="dl-card">
+          <span class="coming-badge">Coming Soon</span>
+          <div class="dl-os-icon">🐧</div>
+          <h3>Linux</h3>
+          <div class="dl-sub">Ubuntu 20.04+ — 64-bit</div>
+          <div class="dl-ext">.AppImage</div>
+          <a class="btn-dl-linux" href="download.html">Download for Linux</a>
+        </div>
+      </div>
+
+      <p class="dl-note">
+        Prefer to build from source? Clone the repository and follow the setup steps to get ReconReplay running in
+        minutes.
+      </p>
+
+      <div class="dl-req">
+        <h4>System Requirements</h4>
+        <div class="req-grid">
+          <div class="req-item">
+            <span class="r-label">OS</span>
+            <span class="r-val">Windows 10 / 11</span>
+          </div>
+          <div class="req-item">
+            <span class="r-label">RAM</span>
+            <span class="r-val">4 GB min, 8 GB rec.</span>
+          </div>
+          <div class="req-item">
+            <span class="r-label">Disk</span>
+            <span class="r-val">~500 MB</span>
+          </div>
+          <div class="req-item">
+            <span class="r-label">Python</span>
+            <span class="r-val">3.9+ (bundled)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA STRIP ===== -->
+  <div class="cta-strip">
+    <h2>Start testing smarter today</h2>
+    <p>ReconReplay is free during Beta. All Pro features are fully unlocked — no limits, no paywalls.</p>
+    <div class="cta-btns">
+      <a class="btn-primary" href="#download">Download Free</a>
+      <a class="btn-secondary" href="#features">Explore Features</a>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand-col">
+        <a class="footer-brand" href="landing.html"><span>Recon</span>Replay</a>
+        <p class="footer-desc">Record real browser sessions. Replay them with automated payload injection for
+          comprehensive security testing.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#profiles">Payload Profiles</a></li>
+          <li><a href="#download">Download</a></li>
+          <li><a href="#">What's New</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Use Cases</h4>
+        <ul>
+          <li><a href="#use-cases">Bug Bounty Hunters</a></li>
+          <li><a href="#use-cases">Penetration Testers</a></li>
+          <li><a href="#use-cases">Security Researchers</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 ReconReplay · MIT License · v2.0.0 Beta</p>
+      <div class="footer-badges">
+        <span class="f-badge blue">Beta</span>
+        <span class="f-badge">Electron v40</span>
+        <span class="f-badge">mitmproxy</span>
+        <span class="f-badge">Playwright</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
