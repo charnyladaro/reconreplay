@@ -1158,6 +1158,29 @@
     }
 
     /* =============================================
+       HAMBURGER MENU
+       ============================================= */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background-color: var(--text-hi);
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .mobile-cta {
+      display: none;
+    }
+
+    /* =============================================
        RESPONSIVE
        ============================================= */
     @media (max-width: 1100px) {
@@ -1179,8 +1202,51 @@
         padding: 0 24px;
       }
 
-      .nav-links {
+      .hamburger {
+        display: flex;
+      }
+
+      .desktop-cta {
         display: none;
+      }
+
+      .mobile-cta {
+        display: inline-flex;
+        text-align: center;
+        margin-top: 10px;
+        justify-content: center;
+      }
+
+      .nav-links {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 60px;
+        right: -100%;
+        width: 250px;
+        height: calc(100vh - 60px);
+        background: rgba(1, 4, 9, 0.95);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-left: 1px solid var(--border);
+        padding: 30px 24px;
+        gap: 20px;
+        transition: right 0.3s ease;
+        z-index: 998;
+      }
+
+      .nav-links.active {
+        right: 0;
+      }
+
+      .hamburger.active span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+      }
+      .hamburger.active span:nth-child(2) {
+        opacity: 0;
+      }
+      .hamburger.active span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
       }
 
       section {
@@ -1241,16 +1307,22 @@
 
   <!-- ===== NAVBAR ===== -->
   <nav class="nav">
-    <a class="nav-brand" href="#"><span>Recon</span>Replay</a>
-    <div class="nav-links">
+    <a class="nav-brand" href="landing.html"><span>Recon</span>Replay</a>
+    <div class="nav-links" id="navLinks">
       <a href="#features">Features</a>
       <a href="#how-it-works">How It Works</a>
       <a href="#profiles">Payloads</a>
       <a href="https://github.com/charnyladaro/reconreplay/wiki" target="_blank">Documentation</a>
       <a href="#download">Download</a>
+      <a class="nav-cta mobile-cta" href="https://github.com/charnyladaro/reconreplay/releases/download/Reconreplayv2.0.0/ReconReplay.Setup.2.0.0.exe">Download Free</a>
     </div>
     <div class="nav-right">
-      <a class="nav-cta" href="https://github.com/charnyladaro/reconreplay/releases/download/Reconreplayv2.0.0/ReconReplay.Setup.2.0.0.exe">Download Free</a>
+      <a class="nav-cta desktop-cta" href="https://github.com/charnyladaro/reconreplay/releases/download/Reconreplayv2.0.0/ReconReplay.Setup.2.0.0.exe">Download Free</a>
+      <div class="hamburger" id="hamburgerMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </div>
   </nav>
 
@@ -1284,7 +1356,8 @@
         </div>
 
         <div class="hero-btns">
-          <a class="btn-primary" href="https://github.com/charnyladaro/reconreplay/releases/download/Reconreplayv2.0.0/ReconReplay.Setup.2.0.0.exe">
+          <a class="btn-primary"
+            href="https://github.com/charnyladaro/reconreplay/releases/download/Reconreplayv2.0.0/ReconReplay.Setup.2.0.0.exe">
             <span>⊞</span> Download for Windows
           </a>
           <a class="btn-secondary" href="#how-it-works">
@@ -1666,7 +1739,9 @@
           <h3>Windows</h3>
           <div class="dl-sub">Windows 10 / 11 — 64-bit</div>
           <div class="dl-ext">.exe installer (NSIS)</div>
-          <a class="btn-dl-win" href="https://github.com/charnyladaro/reconreplay/releases/download/Reconreplayv2.0.0/ReconReplay.Setup.2.0.0.exe">Download for Windows</a>
+          <a class="btn-dl-win"
+            href="https://github.com/charnyladaro/reconreplay/releases/download/Reconreplayv2.0.0/ReconReplay.Setup.2.0.0.exe">Download
+            for Windows</a>
         </div>
         <div class="dl-card">
           <span class="coming-badge">Coming Soon</span>
@@ -1712,7 +1787,9 @@
     <h2>Start testing smarter today</h2>
     <p>ReconReplay is free during Beta. All Pro features are fully unlocked — no limits, no paywalls.</p>
     <div class="cta-btns">
-      <a class="btn-primary" href="https://github.com/charnyladaro/reconreplay/releases/download/Reconreplayv2.0.0/ReconReplay.Setup.2.0.0.exe">Download Free</a>
+      <a class="btn-primary"
+        href="https://github.com/charnyladaro/reconreplay/releases/download/Reconreplayv2.0.0/ReconReplay.Setup.2.0.0.exe">Download
+        Free</a>
       <a class="btn-secondary" href="#features">Explore Features</a>
     </div>
   </div>
@@ -1755,6 +1832,24 @@
     </div>
   </footer>
 
+  <script>
+    const hamburger = document.getElementById('hamburgerMenu');
+    const navLinks = document.getElementById('navLinks');
+    
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+      });
+
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+          hamburger.classList.remove('active');
+          navLinks.classList.remove('active');
+        });
+      });
+    }
+  </script>
 </body>
 
 </html>
